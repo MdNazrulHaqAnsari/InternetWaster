@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Internet Waster</title>
+  <style>
+    body { background: #111; color: #0f0; font-family: monospace; text-align: center; margin-top: 10%; }
+    #counter { font-size: 2rem; margin-bottom: 2rem; }
+    button { padding: 1rem 2rem; font-size: 1.2rem; background: #222; border: 2px solid #0f0; color: #0f0; cursor: pointer; margin: 10px; }
+  </style>
+</head>
+<body>
+  <div id="counter">Total Data Fetched: 0.000 GB</div>
+  <button onclick="startFetching()">Start Downloading 20MB Again and Again</button>
+
+  <script>
+    const FILE_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/dummy20mb.bin"; // replace with your file URL
+    let totalFetched = 0;
+
+    function updateCounter() {
+      document.getElementById("counter").innerText =
+        `Total Data Fetched: ${(totalFetched / (1024 ** 3)).toFixed(3)} GB`;
+    }
+
+    async function fetchOnce() {
+      try {
+        const response = await fetch(FILE_URL, { cache: "no-store" });
+        const blob = await response.blob();
+        totalFetched += blob.size;
+        updateCounter();
+      } catch (err) {
+        console.error("Fetch error:", err);
+      }
+    }
+
+    function startFetching() {
+      setInterval(fetchOnce, 3000); // fetch every 3 seconds
+    }
+  </script>
+</body>
+</html>
